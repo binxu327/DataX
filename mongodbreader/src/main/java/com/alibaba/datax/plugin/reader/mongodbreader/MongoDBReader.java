@@ -149,8 +149,11 @@ public class MongoDBReader extends Reader {
                         }
                     }
                     if (tempCol == null) {
+                        /* 2021/1/5
                         //continue; 这个不能直接continue会导致record到目的端错位
-                        record.addColumn(new StringColumn(null));
+                        record.addColumn(new StringColumn(null));*/
+                        //Record中对传进去的null进行了过滤,并没有将其加入Record,依然会导致record到目的端错位,改为空字符串
+                        record.addColumn(new StringColumn(""));
                     }else if (tempCol instanceof Double) {
                         //TODO deal with Double.isNaN()
                         record.addColumn(new DoubleColumn((Double) tempCol));
